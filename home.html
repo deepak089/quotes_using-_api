@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner">
+            <div class="box">
+                <h1>TODAYS QUOTES</h1>
+                <p class="number">
+                    
+                    <i class="fab fa-twitter" id="insta"></i>
+                </p>
+                <div class="text">
+                    <i class="start-quote fas fa-quote-left"></i>
+                    <p id="quotes" class="quotes"> </p>
+                    <p id="author" class="author"> </p>
+                </div>
+                <label class="button">
+                    <p id="new">New Quotes</p>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quotes = document.getElementById("quotes");
+        const author = document.getElementById("author");
+        const btn = document.getElementById("new");
+        const instabtn = document.getElementById("insta");
+
+
+
+        let original = "";
+        let quotesdata = "";
+        const instafun = () => {
+            let instapost = `https://twitter.com/intent/tweet?text=${quotesdata.text}`;
+            window.open(instapost);
+        }
+        const getnextquote = () => {
+            let random = Math.floor(Math.random() * 1644);
+            quotesdata = original[random];
+            quotes.innerText = `${quotesdata.text}`;
+            quotesdata.author == null ? (author.innerText = "Unknown") : (author.innerText = `${quotesdata.author}`);
+
+        }
+
+        const getquotes = async () => {
+
+            const api = "https://type.fit/api/quotes";
+
+            try {
+                let api_data = await fetch(api);
+                original = await api_data.json();
+                getnextquote();
+            }
+            catch (error) {
+                alert("something wrong occured");
+
+            }
+        }
+        instabtn.addEventListener("click", instafun)
+        btn.addEventListener("click", getnextquote)
+        getquotes();
+    </script>
+</body>
+
+</html>
